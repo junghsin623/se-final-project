@@ -12,6 +12,7 @@ env:
   LOCATION: "East Asia"
   HOSTINGPLANNAME: "se-final-project-plan"
   APPINSIGHTLOCATION: "East Asia"
+  SONAR_HOST_URL: "http://52.229.227.187/"
   SKU: "B1 Basic"
 
 jobs:
@@ -29,22 +30,22 @@ jobs:
       run: |
         pip install -r Application/requirements.txt
   
-   # - name: Pytest
-   #   continue-on-error: false
-   #   run: |
-   #     mkdir testresults
-   #     pip install pytest
-   #     pip install pytest-cov
-   #     pytest --cov=./ --cov-config=.coveragerc --cov-report term-missing Tests/unit_tests --junitxml=./testresults/test-results.xml
-   #     pip install pycmd
-   #     py.cleanup Tests/
+     - name: Pytest
+       continue-on-error: false
+       run: |
+         mkdir testresults
+         pip install pytest
+         pip install pytest-cov
+         pytest --cov=./ --cov-config=.coveragerc --cov-report term-missing Tests/unit_tests --junitxml=./testresults/test-results.xml
+         pip install pycmd
+         py.cleanup Tests/
    
-   # - uses: actions/checkout@v2
-   #   with:
-   #     fetch-depth: 0
-   # - uses: sonarsource/sonarqube-scan-action@master
-   #   env:
-   #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+     - uses: actions/checkout@v3
+       with:
+         fetch-depth: 0
+     - uses: sonarsource/sonarqube-scan-action@master
+       env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         
     # Uploading unit test results to artifact store
     - name: Upload unit test results to Artifact
